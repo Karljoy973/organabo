@@ -1,5 +1,5 @@
 {
-  "name": "website",
+  "name": "frontedn",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -7,6 +7,9 @@
     "dev": "vp dev",
     "build": "tsc && vp build",
     "preview": "vp preview"
+  },
+  "dependencies": {
+    "@babylonjs/core": "catalog:"
   },
   "devDependencies": {
     "typescript": "^7.0.2",
