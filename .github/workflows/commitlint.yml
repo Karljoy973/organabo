@@ -25,9 +25,9 @@ jobs:
       - name: Lint commit messages
         run: |
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
-            vp pm exec commitlint --from "$BASE_SHA" --to "$HEAD_SHA"
+            ./node_modules/.bin/commitlint --from "$BASE_SHA" --to "$HEAD_SHA"
           else
-            vp pm exec commitlint --from "$BEFORE_SHA" --to "$GITHUB_SHA"
+            ./node_modules/.bin/commitlint --from "$BEFORE_SHA" --to "$GITHUB_SHA"
           fi
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
