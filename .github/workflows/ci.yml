@@ -19,3 +19,42 @@ jobs:
       - run: vp check
       - run: vp run -r test
       - run: vp run -r build
+
+  e2e:
+    name: playwright smoke tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version: "22"
+          cache: true
+      - run: vp install
+      - name: Build frontend
+        run: vp run frontend#build
+      - name: Install Chromium
+        working-directory: apps/frontend
+        run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Start preview server
+        working-directory: apps/frontend
+        run: |
+          vp preview --port 4173 --strictPort > preview.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:4173 > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -sf http://localhost:4173 > /dev/null || (cat preview.log && exit 1)
+      - name: Run Playwright tests
+        working-directory: apps/frontend
+        run: ./node_modules/.bin/playwright test
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: playwright-report-${{ github.sha }}
+          path: |
+            apps/frontend/playwright-report/
+            apps/frontend/preview.log
+          retention-days: 7
+          if-no-files-found: ignore
