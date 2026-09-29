@@ -1,0 +1,35 @@
+name: Commitlint
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  commitlint:
+    name: lint commit messages
+    runs-on: ubuntu-latest
+    # On the very first push of a branch, event.before is all zeros: nothing to diff.
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000')
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version: "22"
+          cache: true
+      - run: vp install
+      - name: Lint commit messages
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            vp pm exec commitlint --from "$BASE_SHA" --to "$HEAD_SHA"
+          else
+            vp pm exec commitlint --from "$BEFORE_SHA" --to "$GITHUB_SHA"
+          fi
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
