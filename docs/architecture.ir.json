@@ -1,0 +1,196 @@
+{
+  "schema": "drawio-skill/diagram-ir/v1",
+  "metadata": {
+    "title": "Organabo — Architecture",
+    "updated": "2026-09-30",
+    "sources": [
+      "Session « workspace account-creation » (30 sept. 2026) : design validé — ConnectRPC, bcrypt v1, table users",
+      "Session « workspace scene-setup » (29 sept. 2026) : worktree rebasé, identique à master — rien de nouveau",
+      "Sessions architecture (29 sept. 2026) : vision glTF/BlobStore, go:embed, Pi → kube"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "user",
+      "label": "Utilisateur",
+      "kind": "actor",
+      "properties": {
+        "statut": "—"
+      },
+      "provenance": {
+        "source": "session 20260930_181525_adcbd2 — « un user quelconque qui veut créer un compte »"
+      }
+    },
+    {
+      "id": "frontend",
+      "label": "apps/frontend\nReact + Vite + Babylon.js",
+      "kind": "service",
+      "properties": {
+        "statut": "en place (master cc3bc08)",
+        "stack": "Vite+ · TypeScript · @babylonjs/core 9.28",
+        "tests": "Playwright e2e (Chromium) — job e2e CI"
+      },
+      "provenance": {
+        "source": "repo master — apps/frontend"
+      }
+    },
+    {
+      "id": "signup-form",
+      "label": "Création de compte v1\nbouton + formulaire\npseudo · mot de passe · confirmation",
+      "kind": "component",
+      "properties": {
+        "statut": "en cours — worktree account-creation",
+        "note": "validation naïve côté client, le serveur revérifie tout"
+      },
+      "provenance": {
+        "source": "session 20260930_181525_adcbd2 — feature account-creation"
+      }
+    },
+    {
+      "id": "proto",
+      "label": "packages/proto\norganabo/account/v1/account.proto",
+      "kind": "contract",
+      "properties": {
+        "statut": "design validé (pas encore implémenté)",
+        "service": "AccountService.CreateAccount",
+        "requête": "pseudo, password, password_confirmation",
+        "réponse": "user_id, pseudo, created_at",
+        "codegen": "buf → Go (connect-go) + TS (connect-es)"
+      },
+      "provenance": {
+        "source": "session 20260930_181525_adcbd2 — contrat unique"
+      }
+    },
+    {
+      "id": "api",
+      "label": "apps/api\nAPI Go ConnectRPC (:8080)",
+      "kind": "service",
+      "properties": {
+        "statut": "design validé (pas encore implémenté)",
+        "stack": "Go 1.25 · connect-go · pgxpool",
+        "règles": "bcrypt · pseudo 3-32 alphanum_ · mdp ≥ 8 · 400 invalid · 409 pseudo pris",
+        "cors": "dev : autorise :5173"
+      },
+      "provenance": {
+        "source": "session 20260930_181525_adcbd2 — backend naive v1"
+      }
+    },
+    {
+      "id": "db",
+      "label": "Postgres 18-alpine\n(compose, :5432)",
+      "kind": "database",
+      "properties": {
+        "statut": "design validé (pas encore implémenté)",
+        "table": "users(id uuid pk · pseudo unique lower(pseudo) · password_hash bcrypt · created_at)",
+        "migration": "goose 00001_create_users"
+      },
+      "provenance": {
+        "source": "session 20260930_181525_adcbd2 — données"
+      }
+    },
+    {
+      "id": "blobstore",
+      "label": "BlobStore FS\nglTF / GLB",
+      "kind": "storage",
+      "properties": {
+        "statut": "vision (non démarré)",
+        "schéma": "models / artifacts",
+        "serving": "HTTP simple avec Range + ETag — jamais par gRPC"
+      },
+      "provenance": {
+        "source": "sessions architecture 29 sept. 2026"
+      }
+    },
+    {
+      "id": "deploy-pi",
+      "label": "Raspberry Pi\ndocker compose",
+      "kind": "environment",
+      "properties": {
+        "statut": "vision — cible de déploiement minimale"
+      },
+      "provenance": {
+        "source": "sessions architecture 29 sept. 2026"
+      }
+    },
+    {
+      "id": "deploy-kube",
+      "label": "Cluster kube\nCloudNativePG",
+      "kind": "environment",
+      "properties": {
+        "statut": "vision — cible de déploiement pleine"
+      },
+      "provenance": {
+        "source": "sessions architecture 29 sept. 2026"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-user-form",
+      "source": "user",
+      "target": "signup-form",
+      "label": "crée son compte",
+      "kind": "sync",
+      "properties": {}
+    },
+    {
+      "id": "e-proto-ts",
+      "source": "proto",
+      "target": "signup-form",
+      "label": "codegen TS",
+      "kind": "sync",
+      "properties": {}
+    },
+    {
+      "id": "e-proto-go",
+      "source": "proto",
+      "target": "api",
+      "label": "codegen Go",
+      "kind": "sync",
+      "properties": {}
+    },
+    {
+      "id": "e-form-api",
+      "source": "signup-form",
+      "target": "api",
+      "label": "Connect protocol (JSON / HTTP POST)",
+      "kind": "sync",
+      "properties": {
+        "note": "le navigateur ne parle pas gRPC natif"
+      }
+    },
+    {
+      "id": "e-api-db",
+      "source": "api",
+      "target": "db",
+      "label": "pgx — INSERT users (hash bcrypt)",
+      "kind": "sync",
+      "properties": {}
+    },
+    {
+      "id": "e-front-blobs",
+      "source": "frontend",
+      "target": "blobstore",
+      "label": "chargement modèles — HTTP (Range + ETag)",
+      "kind": "sync",
+      "properties": {}
+    },
+    {
+      "id": "e-deploy-pi",
+      "source": "api",
+      "target": "deploy-pi",
+      "label": "binaire unique (front go:embed)",
+      "kind": "sync",
+      "properties": {}
+    },
+    {
+      "id": "e-deploy-kube",
+      "source": "api",
+      "target": "deploy-kube",
+      "label": "binaire unique (front go:embed)",
+      "kind": "sync",
+      "properties": {}
+    }
+  ],
+  "views": []
+}

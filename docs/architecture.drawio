@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio-skill" agent="hand-authored" version="3.0.0">
+  <diagram id="system" name="System">
+    <mxGraphModel dx="800" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1650" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane-feature" value="Feature account-creation — design validé (worktree account-creation)" style="swimlane;startSize=30;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="200" y="30" width="1360" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="proto" value="packages/proto&#xa;organabo/account/v1/account.proto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lane-feature" data-model-id="proto" data-kind="contract" data-properties="{&quot;statut&quot;:&quot;design validé (pas encore implémenté)&quot;,&quot;service&quot;:&quot;AccountService.CreateAccount&quot;,&quot;requête&quot;:&quot;pseudo, password, password_confirmation&quot;,&quot;réponse&quot;:&quot;user_id, pseudo, created_at&quot;,&quot;codegen&quot;:&quot;buf → Go (connect-go) + TS (connect-es)&quot;}" data-source-properties="{&quot;statut&quot;:&quot;design validé (pas encore implémenté)&quot;,&quot;service&quot;:&quot;AccountService.CreateAccount&quot;,&quot;requête&quot;:&quot;pseudo, password, password_confirmation&quot;,&quot;réponse&quot;:&quot;user_id, pseudo, created_at&quot;,&quot;codegen&quot;:&quot;buf → Go (connect-go) + TS (connect-es)&quot;}" data-source-label="packages/proto&#xa;organabo/account/v1/account.proto" data-provenance="{&quot;source&quot;:&quot;session 20260930_181525_adcbd2 — contrat unique&quot;}">
+          <mxGeometry x="280" y="40" width="320" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="signup-form" value="Création de compte v1&#xa;bouton + formulaire&#xa;pseudo · mot de passe · confirmation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane-feature" data-model-id="signup-form" data-kind="component" data-properties="{&quot;statut&quot;:&quot;en cours — worktree account-creation&quot;,&quot;note&quot;:&quot;validation naïve côté client, le serveur revérifie tout&quot;}" data-source-properties="{&quot;statut&quot;:&quot;en cours — worktree account-creation&quot;,&quot;note&quot;:&quot;validation naïve côté client, le serveur revérifie tout&quot;}" data-source-label="Création de compte v1&#xa;bouton + formulaire&#xa;pseudo · mot de passe · confirmation" data-provenance="{&quot;source&quot;:&quot;session 20260930_181525_adcbd2 — feature account-creation&quot;}">
+          <mxGeometry x="40" y="180" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="apps/api&#xa;API Go ConnectRPC (:8080)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane-feature" data-model-id="api" data-kind="service" data-properties="{&quot;statut&quot;:&quot;design validé (pas encore implémenté)&quot;,&quot;stack&quot;:&quot;Go 1.25 · connect-go · pgxpool&quot;,&quot;règles&quot;:&quot;bcrypt · pseudo 3-32 alphanum_ · mdp ≥ 8 · 400 invalid · 409 pseudo pris&quot;,&quot;cors&quot;:&quot;dev : autorise :5173&quot;}" data-source-properties="{&quot;statut&quot;:&quot;design validé (pas encore implémenté)&quot;,&quot;stack&quot;:&quot;Go 1.25 · connect-go · pgxpool&quot;,&quot;règles&quot;:&quot;bcrypt · pseudo 3-32 alphanum_ · mdp ≥ 8 · 400 invalid · 409 pseudo pris&quot;,&quot;cors&quot;:&quot;dev : autorise :5173&quot;}" data-source-label="apps/api&#xa;API Go ConnectRPC (:8080)" data-provenance="{&quot;source&quot;:&quot;session 20260930_181525_adcbd2 — backend naive v1&quot;}">
+          <mxGeometry x="580" y="180" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="Postgres 18-alpine&#xa;(compose, :5432)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane-feature" data-model-id="db" data-kind="database" data-properties="{&quot;statut&quot;:&quot;design validé (pas encore implémenté)&quot;,&quot;table&quot;:&quot;users(id uuid pk · pseudo unique lower(pseudo) · password_hash bcrypt · created_at)&quot;,&quot;migration&quot;:&quot;goose 00001_create_users&quot;}" data-source-properties="{&quot;statut&quot;:&quot;design validé (pas encore implémenté)&quot;,&quot;table&quot;:&quot;users(id uuid pk · pseudo unique lower(pseudo) · password_hash bcrypt · created_at)&quot;,&quot;migration&quot;:&quot;goose 00001_create_users&quot;}" data-source-label="Postgres 18-alpine&#xa;(compose, :5432)" data-provenance="{&quot;source&quot;:&quot;session 20260930_181525_adcbd2 — données&quot;}">
+          <mxGeometry x="1120" y="175" width="200" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="lane-existing" value="En place — master (cc3bc08)" style="swimlane;startSize=30;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="40" y="430" width="340" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="frontend" value="apps/frontend&#xa;React + Vite + Babylon.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane-existing" data-model-id="frontend" data-kind="service" data-properties="{&quot;statut&quot;:&quot;en place (master cc3bc08)&quot;,&quot;stack&quot;:&quot;Vite+ · TypeScript · @babylonjs/core 9.28&quot;,&quot;tests&quot;:&quot;Playwright e2e (Chromium) — job e2e CI&quot;}" data-source-properties="{&quot;statut&quot;:&quot;en place (master cc3bc08)&quot;,&quot;stack&quot;:&quot;Vite+ · TypeScript · @babylonjs/core 9.28&quot;,&quot;tests&quot;:&quot;Playwright e2e (Chromium) — job e2e CI&quot;}" data-source-label="apps/frontend&#xa;React + Vite + Babylon.js" data-provenance="{&quot;source&quot;:&quot;repo master — apps/frontend&quot;}">
+          <mxGeometry x="20" y="40" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lane-vision" value="Vision (planifié)" style="swimlane;startSize=30;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="40" y="590" width="1560" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="blobstore" value="BlobStore FS&#xa;glTF / GLB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;" vertex="1" parent="lane-vision" data-model-id="blobstore" data-kind="storage" data-properties="{&quot;statut&quot;:&quot;vision (non démarré)&quot;,&quot;schéma&quot;:&quot;models / artifacts&quot;,&quot;serving&quot;:&quot;HTTP simple avec Range + ETag — jamais par gRPC&quot;}" data-source-properties="{&quot;statut&quot;:&quot;vision (non démarré)&quot;,&quot;schéma&quot;:&quot;models / artifacts&quot;,&quot;serving&quot;:&quot;HTTP simple avec Range + ETag — jamais par gRPC&quot;}" data-source-label="BlobStore FS&#xa;glTF / GLB" data-provenance="{&quot;source&quot;:&quot;sessions architecture 29 sept. 2026&quot;}">
+          <mxGeometry x="30" y="70" width="260" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="deploy-pi" value="Raspberry Pi&#xa;docker compose" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="lane-vision" data-model-id="deploy-pi" data-kind="environment" data-properties="{&quot;statut&quot;:&quot;vision — cible de déploiement minimale&quot;}" data-source-properties="{&quot;statut&quot;:&quot;vision — cible de déploiement minimale&quot;}" data-source-label="Raspberry Pi&#xa;docker compose" data-provenance="{&quot;source&quot;:&quot;sessions architecture 29 sept. 2026&quot;}">
+          <mxGeometry x="740" y="70" width="260" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="deploy-kube" value="Cluster kube&#xa;CloudNativePG" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="lane-vision" data-model-id="deploy-kube" data-kind="environment" data-properties="{&quot;statut&quot;:&quot;vision — cible de déploiement pleine&quot;}" data-source-properties="{&quot;statut&quot;:&quot;vision — cible de déploiement pleine&quot;}" data-source-label="Cluster kube&#xa;CloudNativePG" data-provenance="{&quot;source&quot;:&quot;sessions architecture 29 sept. 2026&quot;}">
+          <mxGeometry x="1280" y="70" width="260" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="user" value="Utilisateur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1" data-model-id="user" data-kind="actor" data-properties="{&quot;statut&quot;:&quot;—&quot;}" data-source-properties="{&quot;statut&quot;:&quot;—&quot;}" data-source-label="Utilisateur" data-provenance="{&quot;source&quot;:&quot;session 20260930_181525_adcbd2 — « un user quelconque qui veut créer un compte »&quot;}">
+          <mxGeometry x="50" y="220" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="Légende" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="400" y="435" width="310" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1" value="" style="rounded=1;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="30" width="30" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1t" value="Service / front" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="legend">
+          <mxGeometry x="50" y="28" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" value="" style="rounded=1;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="54" width="30" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2t" value="Contrat proto" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="legend">
+          <mxGeometry x="50" y="52" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="78" width="30" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3t" value="Base de données" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="legend">
+          <mxGeometry x="50" y="76" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4" value="" style="rounded=1;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="102" width="30" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4t" value="Stockage fichiers" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="legend">
+          <mxGeometry x="50" y="100" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg5" value="" style="rounded=1;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="126" width="30" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg5t" value="Environnement (vision)" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="legend">
+          <mxGeometry x="50" y="124" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="caption" value="Organabo — Architecture · mise à jour depuis les sessions Hermes (account-creation, scene-setup, archi glTF) · 30 sept. 2026" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="40" y="810" width="900" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="e-user-form" value="crée son compte" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="user" target="signup-form" data-model-id="e-user-form" data-kind="sync" data-properties="{}" data-source-properties="{}" data-source-label="crée son compte">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-proto-ts" value="codegen TS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="proto" target="signup-form" data-model-id="e-proto-ts" data-kind="sync" data-properties="{}" data-source-properties="{}" data-source-label="codegen TS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-proto-go" value="codegen Go" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="proto" target="api" data-model-id="e-proto-go" data-kind="sync" data-properties="{}" data-source-properties="{}" data-source-label="codegen Go">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-form-api" value="Connect (JSON/HTTP POST)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="signup-form" target="api" data-model-id="e-form-api" data-kind="sync" data-properties="{&quot;note&quot;:&quot;le navigateur ne parle pas gRPC natif&quot;}" data-source-properties="{&quot;note&quot;:&quot;le navigateur ne parle pas gRPC natif&quot;}" data-source-label="Connect protocol (JSON / HTTP POST)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-api-db" value="pgx · INSERT users" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="api" target="db" data-model-id="e-api-db" data-kind="sync" data-properties="{}" data-source-properties="{}" data-source-label="pgx — INSERT users (hash bcrypt)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-front-blobs" value="HTTP (Range + ETag)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="frontend" target="blobstore" data-model-id="e-front-blobs" data-kind="sync" data-properties="{&quot;note&quot;:&quot;chargement des modèles 3D — HTTP simple (Range + ETag), jamais par gRPC&quot;}" data-source-properties="{&quot;note&quot;:&quot;chargement des modèles 3D — HTTP simple (Range + ETag), jamais par gRPC&quot;}" data-source-label="HTTP (Range + ETag)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" x="-70" y="-35" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-deploy-pi" value="go:embed · compose" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="api" target="deploy-pi" data-model-id="e-deploy-pi" data-kind="sync" data-properties="{&quot;detail&quot;:&quot;binaire Go unique, front Vite embarqué via go:embed — déploiement Raspberry Pi en docker compose&quot;}" data-source-properties="{&quot;detail&quot;:&quot;binaire Go unique, front Vite embarqué via go:embed — déploiement Raspberry Pi en docker compose&quot;}" data-source-label="go:embed · compose">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-deploy-kube" value="go:embed · CloudNativePG" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="api" target="deploy-kube" data-model-id="e-deploy-kube" data-kind="sync" data-properties="{&quot;detail&quot;:&quot;binaire Go unique, front Vite embarqué via go:embed — déploiement cluster kube avec CloudNativePG&quot;}" data-source-properties="{&quot;detail&quot;:&quot;binaire Go unique, front Vite embarqué via go:embed — déploiement cluster kube avec CloudNativePG&quot;}" data-source-label="go:embed · CloudNativePG">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1180" y="285" />
+              <mxPoint x="1180" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
