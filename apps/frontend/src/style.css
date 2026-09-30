@@ -1,2 +1,357 @@
 :root {
+  color-scheme: dark;
+  --panel-bg: #16202b;
+  --panel-header-bg: #1d2a38;
+  --panel-border: #263547;
+  --text: #e8edf5;
+  --text-muted: #9fb0c3;
+  --accent: #5fa8d3;
+  --scene-bg: #10161f;
+  --tab-bg: #1d2a38;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  background-color: var(--scene-bg);
+  color: var(--text);
+}
+
+#app {
+  height: 100%;
+}
+
+/* --- App shell: every region is a panel host --- */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 4px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.panel-host {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+
+.panel-host-top,
+.panel-host-bottom {
+  flex: none;
+}
+
+.app-middle {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  gap: 4px;
+}
+
+.panel-host-left,
+.panel-host-right {
+  flex: none;
+  width: 240px;
+}
+
+.app-center {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: var(--scene-bg);
+}
+
+/* --- Panels --- */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.panel-host-left .panel,
+.panel-host-right .panel {
+  width: 100%;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  min-height: 30px;
+  padding: 0 4px 0 8px;
+  background-color: var(--panel-header-bg);
+  border-bottom: 1px solid var(--panel-border);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.panel-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panel-close {
+  flex: none;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.panel-close:hover {
+  color: var(--text);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.panel-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 8px;
+}
+
+/* Top and bottom panels are horizontal bars; the header lives inside the content. */
+
+.panel-host-top .panel {
+  flex-direction: row;
+  align-items: stretch;
+  height: 44px;
+}
+
+.panel-host-bottom .panel {
+  flex-direction: row;
+  align-items: center;
+  height: 30px;
+}
+
+.panel-host-top .panel-header,
+.panel-host-bottom .panel-header {
+  display: none;
+}
+
+.panel-host-top .panel-content,
+.panel-host-bottom .panel-content {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
+/* --- Edge tabs (collapsed panels) --- */
+
+.panel-host-top.is-collapsed,
+.panel-host-bottom.is-collapsed {
+  height: 22px;
+}
+
+.panel-host-left.is-collapsed,
+.panel-host-right.is-collapsed {
+  width: 22px;
+}
+
+.panel-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  background-color: var(--tab-bg);
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+}
+
+.panel-tab:hover {
+  color: var(--text);
+  background-color: #24344a;
+}
+
+.panel-host-left .panel-tab-label,
+.panel-host-right .panel-tab-label {
+  writing-mode: vertical-rl;
+}
+
+.panel-host-left .panel-tab-label {
+  transform: rotate(180deg);
+}
+
+/* --- Top bar content --- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.topbar-brand {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.topbar-menu {
+  display: flex;
+  gap: 4px;
+}
+
+.topbar-item,
+.topbar-panel-toggle,
+.sidebar-pin {
+  border: 1px solid transparent;
+  background: none;
+  color: var(--text);
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.topbar-item:hover,
+.topbar-panel-toggle:hover,
+.sidebar-pin:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.topbar-panels {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+
+.topbar-panel-toggle[aria-pressed="true"] {
+  border-color: var(--panel-border);
+  background-color: rgba(95, 168, 211, 0.15);
+  color: var(--accent);
+}
+
+/* --- Sidebars --- */
+
+.sidebar-heading {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.tree,
+.tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree ul {
+  padding-left: 12px;
+}
+
+.tree li {
+  padding: 3px 0;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.tree summary {
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.props {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prop {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.prop input[type="text"] {
+  background-color: #0e1620;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  color: var(--text);
+  padding: 4px 6px;
+  font-size: 13px;
+}
+
+.prop input[type="range"] {
+  accent-color: var(--accent);
+}
+
+.sidebar-pin {
+  margin-top: 12px;
+  border-color: var(--panel-border);
+}
+
+.sidebar-pin[aria-pressed="true"] {
+  color: var(--accent);
+  background-color: rgba(95, 168, 211, 0.15);
+}
+
+/* --- Status bar --- */
+
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.statusbar-right {
+  margin-left: auto;
+}
+
+/* --- 3D viewport --- */
+
+.scene-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  touch-action: none;
+}
+
+.scene-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: var(--text-muted);
 }
