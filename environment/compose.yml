@@ -1,0 +1,66 @@
+name: organabo
+
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: apps/frontend/Dockerfile
+    image: organabo/frontend:dev
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    restart: unless-stopped
+
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-organabo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-organabo}
+      POSTGRES_DB: ${POSTGRES_DB:-organabo}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  api:
+    profiles: ["api"]
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    image: organabo/api:dev
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-organabo}:${POSTGRES_PASSWORD:-organabo}@db:5432/${POSTGRES_DB:-organabo}
+    ports:
+      - "${API_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  storage:
+    image: chrislusf/seaweedfs:4.33
+    command: mini -dir=/data
+    environment:
+      AWS_ACCESS_KEY_ID: ${SEAWEED_ACCESS_KEY:-organabo}
+      AWS_SECRET_ACCESS_KEY: ${SEAWEED_SECRET_KEY:-organabo}
+      S3_BUCKET: ${SEAWEED_BUCKETS:-models,artifacts}
+    ports:
+      - "${SEAWEED_S3_PORT:-8333}:8333"
+      - "${SEAWEED_ADMIN_PORT:-9333}:9333"
+    volumes:
+      - weeddata:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:9333/ || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  weeddata:
